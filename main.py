@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
-
+import re
 
 import pygame
 def main():
@@ -48,8 +48,8 @@ def main():
     # Click the button
     button.click()
 
-    # Wait for the game to load
-    time.sleep(7)
+    # # Wait for the game to load
+    # time.sleep(7)
 
 
     pygame.init()
@@ -65,32 +65,20 @@ def main():
         current_time = element.text
 
         #alert when 30 seconds lefet
-        if current_time == '2:50':
+        if current_time == '0:30':
             pygame.mixer.music.load(mp3_file1_path)
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy():
                 continue
-        if current_time == '2:55':
-            pygame.mixer.music.load(mp3_file2_path)
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy():
-                continue
-            # while True:
-            #     print(len(driver.find_elements(By.CSS_SELECTOR, '.clock-component.clock-bottom.clock-player-turn')))
-            #     while len(driver.find_elements(By.CSS_SELECTOR, '.clock-component.clock-bottom.clock-player-turn')) != 0:
-            #         if not pygame.mixer.music.get_busy():
-            #             pygame.mixer.music.unpause()
-            #         else:
-            #             continue
-            #
-            #     pygame.mixer.music.pause()
-            #     while len(driver.find_elements(By.CSS_SELECTOR,'.clock-component.clock-bottom.clock-player-turn')) == 0:
-            #         continue
-        if current_time == '0:15':
+            pygame.mixer.music.stop()
+
+
+        pattern = r'^0:15\.\w+$'
+        match = re.match(pattern, current_time)
+        if match:
             pygame.mixer.music.load(mp3_file3_path)
             pygame.mixer.music.play()
             while True:
-                print(len(driver.find_elements(By.CSS_SELECTOR, '.clock-component.clock-bottom.clock-player-turn')))
                 while len(driver.find_elements(By.CSS_SELECTOR, '.clock-component.clock-bottom.clock-player-turn')) != 0:
                     if not pygame.mixer.music.get_busy():
                         pygame.mixer.music.unpause()
