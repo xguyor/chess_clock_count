@@ -4,15 +4,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
 import re
+import os
+
 
 import pygame
 def main():
 
     # Set up Chrome driver
     chrome_options = Options()
-    user_data_directory = ""
+    user_data_directory = os.getcwd()
     chrome_options.add_argument(f"user-data-dir={user_data_directory}\\userdata")
-    #chrome_options.add_argument("--headless")  # Run Chrome in headless mode
     service = Service('/usr/local/bin')  # Replace with the actual path to the chromedriver executable
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -90,6 +91,7 @@ def main():
                     continue
         # Check if the clock has run out
         if current_time == "0:00":
+            pygame.mixer.music.stop()
             break
 
         # Wait for a short interval before checking the clock again
