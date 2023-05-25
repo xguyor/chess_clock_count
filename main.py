@@ -1,28 +1,15 @@
 
 import time
 import re
-import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import pygame
 import webbrowser
+import pygame
 
 
 def main():
-
-    #
-    # # Specify the path to your HTML file
-    # html_file = "file:///Users/guyor/PycharmProjects/chess_clock_alert/login.html"
-    # # Open the HTML file in the default web browser
-    # webbrowser.open_new_tab(html_file)
-
-
-
     chrome_options = Options()
     # user_data_directory = os.getcwd()
     # chrome_options.add_argument(f"user-data-dir={user_data_directory}\\userdata")
@@ -41,17 +28,7 @@ def main():
         with open(credentials_file_path, "r") as file:
             # Read the credentials from the file
             username, password = file.read().strip().split(",")
-            # Find the username/email input field and enter the value
-            username_input = driver.find_element(By.ID, "username")
-            username_input.send_keys(username)
 
-            # Find the password input field and enter the value
-            password_input = driver.find_element(By.ID, "password")
-            password_input.send_keys(password)
-
-            # Find the login button and click it
-            login_button = driver.find_element(By.ID, "login")
-            login_button.click()
 
     except FileNotFoundError:
         # If the file doesn't exist, prompt the user for the credentials
@@ -61,7 +38,17 @@ def main():
         with open(credentials_file_path, "w") as file:
             file.write(f"{username},{password}")
 
+    # Find the username/email input field and enter the value
+    username_input = driver.find_element(By.ID, "username")
+    username_input.send_keys(username)
 
+    # Find the password input field and enter the value
+    password_input = driver.find_element(By.ID, "password")
+    password_input.send_keys(password)
+
+    # Find the login button and click it
+    login_button = driver.find_element(By.ID, "login")
+    login_button.click()
 
     # Navigate to the game URL
     game_url = "https://www.chess.com/play/online/new"
