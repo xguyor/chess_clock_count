@@ -5,14 +5,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-import webbrowser
 import pygame
 
 
 def main():
     chrome_options = Options()
-    # user_data_directory = os.getcwd()
-    # chrome_options.add_argument(f"user-data-dir={user_data_directory}\\userdata")
     service = Service('/usr/local/bin')  # Replace with the actual path to the chromedriver executable
     driver = webdriver.Chrome(service=service)
 
@@ -88,8 +85,9 @@ def main():
 
 
     # Start monitoring the clock
+    gameover = False
     while True:
-
+        gameover = False
         # clock_element = driver.execute_script("return document.querySelector('span[data-cy=\"clock-time\"]').innerText;")
         element = driver.find_element(By.CSS_SELECTOR, '.clock-component.clock-bottom .clock-time-monospace')
         current_time = element.text
@@ -111,6 +109,7 @@ def main():
             while True:
                 while len(driver.find_elements(By.CSS_SELECTOR, '.clock-component.clock-bottom.clock-player-turn')) != 0:
                     if len(driver.find_elements(By.CSS_SELECTOR, '.board-modal-container-container')) != 0:
+                        gameover = True
                         pygame.mixer.music.stop()
                         break
                     if not pygame.mixer.music.get_busy():
@@ -121,14 +120,12 @@ def main():
                 pygame.mixer.music.pause()
                 while len(driver.find_elements(By.CSS_SELECTOR,'.clock-component.clock-bottom.clock-player-turn')) == 0:
                     if len(driver.find_elements(By.CSS_SELECTOR, '.board-modal-container-container')) != 0:
+                        gameover = True
                         pygame.mixer.music.stop()
                         break
                     continue
-
-        # Check if the clock has run out
-        if current_time == "0:00":
-            pygame.mixer.music.stop()
-            break
+                if gameover:
+                    break
 
         # Wait for a short interval before checking the clock again
         time.sleep(0.5)
